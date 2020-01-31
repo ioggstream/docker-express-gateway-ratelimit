@@ -1,0 +1,50 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+
+# Define here the exposed endpoints.
+apiEndpoints:
+  # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
+  httpbin:
+    host: 'hb.example.com'
+    paths:
+    - '/ip'
+
+# Define here the backend services.
+serviceEndpoints:
+  # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/serviceEndpoints
+  httpbin:
+     url: 'https://httpbin.org/'
+
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+
+# Pipelines tie APIs and SERVICEs.
+pipelines:
+  # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
+ 
+# Associate httpbin API to http backend
+- name: httpbin
+  apiEndpoints:
+  - httpbin
+  policies:
+  - rate-limit:
+    - action:
+      max: 10
+      windowMs: 12000
+      rateLimitBy: "${req.hostname}"
+ 
+  - proxy:
+    - action:
+       serviceEndpoint: httpbin
+       changeOrigin: true
+ 
