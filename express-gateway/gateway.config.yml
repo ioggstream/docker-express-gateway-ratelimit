@@ -7,8 +7,8 @@ admin:
 # Define here the exposed endpoints.
 apiEndpoints:
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
-  httpbin:
-    host: 'hb.example.com'
+  api:
+    host: localhost
     paths:
     - '/ip'
 
@@ -33,18 +33,18 @@ pipelines:
   # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
  
 # Associate httpbin API to http backend
-- name: httpbin
-  apiEndpoints:
-  - httpbin
-  policies:
-  - rate-limit:
-    - action:
-      max: 10
-      windowMs: 12000
-      rateLimitBy: "${req.hostname}"
- 
-  - proxy:
-    - action:
-       serviceEndpoint: httpbin
-       changeOrigin: true
- 
+  - name: default
+    apiEndpoints:
+      - api
+    policies:
+    - rate-limit:
+      - action:
+        max: 10
+        windowMs: 12000
+        rateLimitBy: "${req.hostname}"
+  
+    - proxy:
+      - action:
+          serviceEndpoint: httpbin
+          changeOrigin: true
+  
