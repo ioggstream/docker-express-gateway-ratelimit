@@ -8,6 +8,7 @@ admin:
 apiEndpoints:
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
   api:
+    host: localhost
     paths: "/ip"
 
 
