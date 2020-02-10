@@ -8,6 +8,7 @@ WORKDIR /modi
 
 # workaround as "eg" still uses the old ratelimit
 RUN npm install sanyamdogra/express-gateway#update-rate-limit
+RUN npm install sanyamdogra/express-rate-limit#header-standard
     
 
 ADD gateway.config.yml /modi/config/gateway.config.yml
