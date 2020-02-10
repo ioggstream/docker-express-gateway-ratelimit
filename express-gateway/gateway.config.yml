@@ -8,15 +8,14 @@ admin:
 apiEndpoints:
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
   api:
-    host: localhost
-    paths:
-    - '/ip'
+    paths: "/ip"
+
 
 # Define here the backend services.
 serviceEndpoints:
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/serviceEndpoints
   httpbin:
-     url: 'https://httpbin.org/'
+    url: 'https://httpbin.org'
 
 policies:
   - basic-auth
@@ -31,22 +30,19 @@ policies:
 # Pipelines tie APIs and SERVICEs.
 pipelines:
   # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
- 
-# Associate httpbin API to http backend
   - name: default
     apiEndpoints:
       - api
     policies:
-    - rate-limit:
-      - action:
-          max: 10
-          windowMs: 12000
-          rateLimitBy: "${req.hostname}"
-          draft_polli_ratelimit_headers: true
-          headers: false # do not send the old headers
-  
-    - proxy:
-      - action:
-          serviceEndpoint: httpbin
-          changeOrigin: true
-  
+     - rate-limit:
+        - action:
+            max: 10
+            windowMs: 12000
+            headers: false #to not send the old headers
+            draft_polli_ratelimit_headers: true
+            rateLimitBy: "${req.hostname}"
+          
+     - proxy:
+        - action:
+            serviceEndpoint: httpbin 
+            changeOrigin: true 
