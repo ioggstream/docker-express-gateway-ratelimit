@@ -39,9 +39,11 @@ pipelines:
     policies:
     - rate-limit:
       - action:
-        max: 10
-        windowMs: 12000
-        rateLimitBy: "${req.hostname}"
+          max: 10
+          windowMs: 12000
+          rateLimitBy: "${req.hostname}"
+          draft_polli_ratelimit_headers: true
+          headers: false # do not send the old headers
   
     - proxy:
       - action:
